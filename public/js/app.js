@@ -29969,15 +29969,13 @@ __webpack_require__.r(__webpack_exports__);
       this.taskId = null;
     },
     updateTaskStatus: function updateTaskStatus(e, taskId) {
-      console.log(e.target.value);
-      this.is_completed = e.target.value;
-      console.log(e.target.value ? 0 : 1); //   data._method = "PUT";
-      //   data.is_completed =
-      //   this.$inertia.post(`/task/update-status/${taskId}`, data);
-      //   this.resetTask();
-      //   this.closeTaskModal();
-      //   this.editMode = false;
-      //   this.taskId = null;
+      var data = {
+        _method: "PUT",
+        is_completed: e.target.checked ? "1" : "0"
+      };
+      this.$inertia.post("/task/update-status/".concat(taskId), data);
+      this.editMode = false;
+      this.taskId = null;
     },
     getCompletedTaskPer: function getCompletedTaskPer(tasks) {
       if (tasks.length === 0) return "0%";
@@ -31819,7 +31817,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Tasks "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(list.tasks, function (task) {
           return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
             key: task.id,
-            "class": "mb-3 p-3 flex flex-col bg-white rounded-md shadow transform hover:shadow-md cursor-pointer"
+            "class": ["mb-3 p-3 flex flex-col bg-white rounded-md shadow transform hover:shadow-md cursor-pointer", {
+              'opacity-60': task.is_completed == '1'
+            }]
           }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_49, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.title), 1
           /* TEXT */
           ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(task.description), 1
@@ -31846,7 +31846,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           /* PROPS */
           , ["onClick"])]), _hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_53, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_54, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
             type: "checkbox",
-            value: $data.is_completed,
+            value: task.is_completed,
             "class": "form-checkbox h-5 w-5 text-gray-600",
             checked: task.is_completed,
             onChange: function onChange($event) {
@@ -31854,7 +31854,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             }
           }, null, 40
           /* PROPS, HYDRATE_EVENTS */
-          , ["value", "checked", "onChange"]), _hoisted_55])])]);
+          , ["value", "checked", "onChange"]), _hoisted_55])])], 2
+          /* CLASS */
+          );
         }), 128
         /* KEYED_FRAGMENT */
         )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ./Tasks "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" No Tasks "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_56, [_hoisted_57, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {

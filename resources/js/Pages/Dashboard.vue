@@ -325,6 +325,7 @@
                     v-for="task in list.tasks"
                     :key="task.id"
                     class="mb-3 p-3 flex flex-col bg-white rounded-md shadow transform hover:shadow-md cursor-pointer"
+                    :class="{ 'opacity-60': task.is_completed == '1' }"
                   >
                     <span class="block mb-2 text-xl text-gray-900">
                       {{ task.title }}
@@ -357,7 +358,7 @@
                       <label class="inline-flex items-center mt-3">
                         <input
                           type="checkbox"
-                          :value="is_completed"
+                          :value="task.is_completed"
                           class="form-checkbox h-5 w-5 text-gray-600"
                           :checked="task.is_completed"
                           @change="updateTaskStatus($event, task.id)"
@@ -509,16 +510,13 @@ export default {
       this.taskId = null;
     },
     updateTaskStatus: function (e, taskId) {
-      console.log(e.target.value);
-      this.is_completed = e.target.value;
-      console.log(e.target.value ? 0 : 1);
-      //   data._method = "PUT";
-      //   data.is_completed =
-      //   this.$inertia.post(`/task/update-status/${taskId}`, data);
-      //   this.resetTask();
-      //   this.closeTaskModal();
-      //   this.editMode = false;
-      //   this.taskId = null;
+      let data = {
+        _method: "PUT",
+        is_completed: e.target.checked ? "1" : "0",
+      };
+      this.$inertia.post(`/task/update-status/${taskId}`, data);
+      this.editMode = false;
+      this.taskId = null;
     },
     getCompletedTaskPer(tasks) {
       if (tasks.length === 0) return "0%";

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\TaskList;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Validator;
 
 class TaskListController extends Controller
 {
@@ -14,17 +16,8 @@ class TaskListController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $lists = TaskList::with('tasks')->get();
+        return Inertia::render('Dashboard', ['lists' => $lists]);
     }
 
     /**
@@ -35,29 +28,13 @@ class TaskListController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        Validator::make($request->all(), [
+            'title' => ['required'],
+        ])->validate();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TaskList  $taskList
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TaskList $taskList)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\TaskList  $taskList
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(TaskList $taskList)
-    {
-        //
+        TaskList::create($request->all());
+        return redirect()->back()
+            ->with('message', 'List Created Successfully.');
     }
 
     /**
